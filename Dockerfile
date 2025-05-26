@@ -1,4 +1,12 @@
-FROM selenium/node-chrome:4.18.1-20240226
+FROM selenium/node-chrome:103.0-20250515
+
+USER root
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+RUN npm install -g typescript
 
 WORKDIR /app
 

@@ -21,15 +21,10 @@ import { IUIService } from './core/interfaces.js'; // Importar la interfaz UI
 
 // Importar GlobalWorkerOptions de la versión legacy (necesario para configurar el worker)
 import { GlobalWorkerOptions } from 'pdfjs-dist/legacy/build/pdf.mjs';
-
-
 // Definir __filename y __dirname para módulos ES
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Configurar la ruta del worker para pdfjs-dist en Node.js
-// *** CORRECCIÓN AQUÍ: Usar process.cwd() para obtener la ruta absoluta a la raíz del proyecto ***
-// Esto parece ser más robusto para pdfjs-dist worker loading en algunos entornos
 GlobalWorkerOptions.workerSrc = pathToFileURL(path.join(process.cwd(), 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.mjs')).toString();
 
 
@@ -191,11 +186,11 @@ async function facebookMessengerBot(targetChatId: string | null = null): Promise
             // --- Instanciar y cablear los servicios y la lógica central ---
             // Define la configuración de conexión a PostgreSQL aquí
             const DB_CONFIG = {
-                user: process.env.PGUSER || 'postgres',
-                host: process.env.PGHOST || 'localhost',
-                database: process.env.PGDATABASE || 'catalogo_db',
-                password: process.env.PGPASSWORD || '123',
-                port: process.env.PGPORT ? parseInt(process.env.PGPORT) : 5432,
+                user: process.env.POSTGRES_USER,
+                host: process.env.POSTGRES_HOST,
+                database: process.env.PGDATABASE,
+                password: process.env.POSTGRES_PASSWORD,
+                port: process.env.POSTGRES_PORT,
             };
             const dbService = new PostgresDbService(DB_CONFIG);
             const pdfService = new PdfjsPdfService();
